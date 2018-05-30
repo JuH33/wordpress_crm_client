@@ -1,0 +1,24 @@
+{
+    "ines": {
+        "formKeys": {
+            "firstname": "TextBox_85569",
+            "lastname": "TextBox_85568",
+            "position": "TextBox_85570",
+            "company": "TextBox_85567",
+            "country": "Select_85571",
+            "zipcode": "TextBox_85572",
+            "industry": "Select_85575",
+            "email": "TextBox_85573",
+            "tel": "TextBox_85574",
+            "fleetsize": "TextBox_85576",
+            "subject-list": "Select_85577",
+            "message": "TextBox_85582",
+            "NavigationGPS": "Select_85581"
+        }
+    },
+    "mapotempo": {
+        "countries": [
+            "Portugal"
+        ]
+    }
+}

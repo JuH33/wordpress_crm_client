@@ -18,6 +18,8 @@ class Mapotempo extends BaseClient implements IModelCRM {
     wpcf7VehicleLimitIsOverpassed as public;
   }
 
+  public static $JSON_IDENTITY = "mapotempo";
+
   private $_apiAdmin = MAPOTEMPO_API_KEY;
   private $_templatesIds = array('FR' => MAPOTEMPO_TEMPLATE_ID_FR, 'EN' => MAPOTEMPO_TEMPLATE_ID_EN, 'MA' => MAPOTEMPO_TEMPLATE_ID_MA,
                                   'HE' => MAPOTEMPO_TEMPLATE_ID_HE, 'PT' => MAPOTEMPO_TEMPLATE_ID_PT);
@@ -93,7 +95,6 @@ class Mapotempo extends BaseClient implements IModelCRM {
     }
     
     $this->_base_user = $response[0];
-    var_dump($this->_base_user);
   }
 
   private function updateDuplicatedCustomer($id) {
@@ -225,112 +226,49 @@ class Mapotempo extends BaseClient implements IModelCRM {
   }
 
   private function countriesManager() {
-    $baseIterator = array();
+    $countriesArray = array();
     $notSupported = true;
 
-    $callFrTemp = array(
-     'template' => 'FR',
-     'countries' => array(
-      'Belgique',
-      'France',
-      'Guadeloupe',
-      'Guyane francais',
-      'Luxembourg',
-      'Martinique',
-      'Mayotte',
-      'Monaco',
-      'Nouvelle-Calédonie',
-      'Polynésie française',
-      'Saint-Barthélemy',
-      'Saint-Martin',
-      'Saint-Pierre-et-Miquelon',
-      'Suisse'
-      )
-     );
+    $fr = file_get_contents(__DIR__ . "/translations/fr.json");
+    $ma = file_get_contents(__DIR__ . "/translations/ma.json");
+    $en = file_get_contents(__DIR__ . "/translations/en.json");
+    $pt = file_get_contents(__DIR__ . "/translations/pt.json");
+    $he = file_get_contents(__DIR__ . "/translations/he.json");
 
-    $callMaTemp = array(
-     'template' => 'MA',
-     'countries' => array(
-       'Afrique du Sud',
-       'Sénégal',
-       'Turquie',
-       'Algérie',
-       'Tunisie',
-       'Maroc'
-       )
-     );
+    $frCountries = array(
+      "template" => "FR",
+      'countries' => json_decode($fr, true)[self::$JSON_IDENTITY]['countries']
+    );
+    
+    $maCountries = array(
+      "template" => "MA",
+      'countries' => json_decode($ma, true)[self::$JSON_IDENTITY]['countries']
+    );
 
-    $callEnTemp = array(
-     'template' => 'EN',
-     'countries' => array(
-       'Albanie',
-       'Allemagne',
-       'Andorre',
-       'Canada',
-       'Arménie',
-       'Australie',
-       'Autriche',
-       'Azerbaïdjan',
-       'Bosnie-Herzégovine',
-       'Biélorussie',
-       'Bulgarie',
-       'Chypre',
-       'Cité du Vatican',
-       'Croatie',
-       'Danemark',
-       'Espagne',
-       'Estonie',
-       'Finlande',
-       'Grèce',
-       'Géorgie',
-       'Hongrie',
-       'Irlande',
-       'Islande',
-       'Italie',
-       'Kosovo',
-       'Lettonie',
-       'Liechtenstein',
-       'Lituanie',
-       'Macédoine',
-       'Malte',
-       'Monténégro',
-       'Norvège',
-       'Pays-Bas',
-       'Pologne',
-       'Roumanie',
-       'Royaume-Uni',
-       'République tchèque',
-       'Serbie',
-       'Slovaquie',
-       'Slovénie',
-       'Suède',
-       'Ukraine'
-       )
-     );
+    $enCountries = array(
+      'template' => 'EN',
+      'countries' => json_decode($en, true)[self::$JSON_IDENTITY]['countries']
+    );
 
-    $callPtTemp = array(
+    $ptCountries = array(
       'template' => 'PT',
-      'countries' => array(
-          'Portugal',
-      )
+      'countries' => json_decode($pt, true)[self::$JSON_IDENTITY]['countries']
     );
 
-    $callHeTemp = array(
-        'template' => 'HE',
-        'countries' => array(
-            'Israël'
-        )
+    $heCountries = array(
+      'template' => 'HE',
+      'countries' => json_decode($he, true)[self::$JSON_IDENTITY]['countries']
     );
 
-    array_push($baseIterator, $callFrTemp);
-    array_push($baseIterator, $callEnTemp);
-    array_push($baseIterator, $callMaTemp);
-    array_push($baseIterator, $callPtTemp);
-    array_push($baseIterator, $callHeTemp);
+    array_push($countriesArray, $frCountries);
+    array_push($countriesArray, $enCountries);
+    array_push($countriesArray, $maCountries);
+    array_push($countriesArray, $ptCountries);
+    array_push($countriesArray, $heCountries);
 
-    for ($i = 0; $i < sizeof($baseIterator); $i++) {
-      if (in_array($this->dataFormatted['country'], $baseIterator[$i]['countries'])) {
-        $this->_templateName = $baseIterator[$i]['template'];
+    for ($i = 0; $i < sizeof($countriesArray); $i++) {
+      if (in_array($this->dataFormatted['country'], $countriesArray[$i]['countries'])) {
+        $this->_templateName = $countriesArray[$i]['template'];
         $notSupported = false;
         break;
       }

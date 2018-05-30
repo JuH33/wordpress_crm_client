@@ -1,0 +1,37 @@
+{
+    "ines": {
+        "formKeys": {
+            "firstname": "TextBox_71847",
+            "lastname": "TextBox_71848",
+            "position": "TextBox_71849",
+            "company": "TextBox_71850",
+            "country": "Select_71851",
+            "zipcode": "TextBox_71852",
+            "industry": "Select_71855",
+            "email": "TextBox_71853",
+            "tel": "TextBox_73385",
+            "fleetsize": "TextBox_71856",
+            "subject-list": "Select_71857",
+            "message": "TextBox_71858",
+            "NavigationGPS": "Select_78291"
+        }
+    },
+    "mapotempo": {
+        "countries": [
+            "Belgique",
+            "France",
+            "Guadeloupe",
+            "Guyane francais",
+            "Luxembourg",
+            "Martinique",
+            "Mayotte",
+            "Monaco",
+            "Nouvelle-Calédonie",
+            "Polynésie française",
+            "Saint-Barthélemy",
+            "Saint-Martin",
+            "Saint-Pierre-et-Miquelon",
+            "Suisse"
+        ]        
+    }
+}

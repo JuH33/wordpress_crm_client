@@ -1,0 +1,24 @@
+{
+    "ines": {
+        "formKeys": {
+            "firstname": "TextBox_85550",
+            "lastname": "TextBox_85549",
+            "position": "TextBox_85551",
+            "company": "TextBox_85548",
+            "country": "Select_85552",
+            "zipcode": "TextBox_85553",
+            "industry": "Select_85556",
+            "email": "TextBox_85554",
+            "tel": "TextBox_85555",
+            "fleetsize": "TextBox_85557",
+            "subject-list": "Select_85558",
+            "message": "TextBox_85559",
+            "NavigationGPS": "Select_85562"
+        }
+    },
+    "mapotempo": {
+        "countries": [
+            "Israël"
+        ]
+    }
+}
