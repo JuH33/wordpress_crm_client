@@ -49,13 +49,14 @@ class Mapotempo extends BaseClient implements IModelCRM {
   public function initConnection() {
     $this->_trads = getArrayForLang($this->dataFormatted['localization']);
     $this->checkUser();
+    $this->fetchUserFromBaseCustomer();
     
     if ($this->error) {
       return;
     }
 
     $this->sharedArray['Ines']['Mapotempo-web'] = '1';
-    $url = MAPOTEMPO_URL_API_CUSTOMER . $this->_templatesIds[$this->_templateName] . "/duplicate?api_key=".$this->_apiAdmin;
+    $url = MAPOTEMPO_URL_API_CUSTOMER . $this->_templatesIds[$this->_templateName] . "/duplicate?api_key=" . $this->_apiAdmin;
     $url .= "&exclude_users=true";
 
     $ch = curl_init();
@@ -70,12 +71,32 @@ class Mapotempo extends BaseClient implements IModelCRM {
     }
 
     if (!$this->error) {
-      $this->updateCustomerCreated($response->id);
-      $this->callApiUserCreation($response->id);
+      $this->updateDuplicatedCustomer($response->id);
+      $this->fetchUserFromBaseCustomer();
+      $this->createUserFor($response->id);
     }
   }
 
-  private function updateCustomerCreated($id) {
+  private function fetchUserFromBaseCustomer() {
+    $url = MAPOTEMPO_URL_USERS_CUSTOMER;
+    $url .= $this->_templatesIds[$this->_templateName];
+    $url .= '/users?api_key=' . $this->_apiAdmin;
+
+    $ch = curl_init();
+    $this->setGetRequest($ch, true, $url);
+    $response = json_decode( curl_exec($ch) );
+    curl_close($ch);
+
+    if (!is_array($response) || array_key_exists('error', $response)) {
+      $this->error = true;
+      throw new MapotempoServerError("can't get user informations");
+    }
+    
+    $this->_base_user = $response[0];
+    var_dump($this->_base_user);
+  }
+
+  private function updateDuplicatedCustomer($id) {
     $date = new DateTime('NOW');
     $date->modify("+15 day");
 
@@ -96,7 +117,7 @@ class Mapotempo extends BaseClient implements IModelCRM {
     curl_close($ch);
   }
 
-  private function addDefaultData() {
+  public function addDefaultData() {
     $accept_language = 'FR-fr';
     
     if (isset($_SERVER) &&
@@ -136,17 +157,26 @@ class Mapotempo extends BaseClient implements IModelCRM {
     }
   }
 
-  private function callApiUserCreation($customer_id) {
+  private function createUserFor($customer_id) {
     $lang = ($this->_templateName == 'MA') ? 'fr' : strtolower($this->_templateName);
     $data = array(
       "api_key" => $this->_apiAdmin,
       "email" => $this->dataFormatted['email'],
       "password" => bin2hex(openssl_random_pseudo_bytes(4)),
       "customer_id" => $customer_id,
-      "layer_id" => 2,
+      "layer_id" => 1,
       "prefered_unit" => 'km',
+      'time_zone' => 'Paris',
       "locale" => $lang
     );
+
+    if (isset($this->_base_user)) {
+      $user = $this->_base_user;
+
+      $data['time_zone'] = $user->time_zone;
+      $data['prefered_unit'] = $user->prefered_unit;
+      $data['layer_id'] = $user->layer_id;
+    }
 
     $ch = curl_init();
     $this->setPostRequest($ch, $data, true, MAPOTEMPO_URL_API_USER);

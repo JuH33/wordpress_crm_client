@@ -40,7 +40,7 @@ class Ines extends BaseClient implements IModelCRM {
     $this->sharedArray = &$array;
   }
 
-  private function addDefaultData() {
+  public function addDefaultData() {
     $matcher = $this->getMatcherArrayFromLocalization();
 
     foreach ($this->dataFormatted as $key => $value) {
