@@ -54,7 +54,6 @@ class Ines extends BaseClient implements IModelCRM {
     }
   }
 
-  // TODO: Remove External Files
   private function getMatcherArrayFromLocalization() {
     $loc = strtolower($this->dataFormatted['localization']);
     $matcher;
