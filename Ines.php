@@ -2,6 +2,8 @@
 
 class Ines extends BaseClient implements IModelCRM {
 
+  public static $JSON_IDENTITY = "ines";
+
   private $_userCreatedName;
 
   use traitsConnection {
@@ -59,76 +61,24 @@ class Ines extends BaseClient implements IModelCRM {
 
     switch ($loc) {
       case "fr":
-        $matcher = array(
-          'firstname' => 'TextBox_71847',
-          'lastname' => 'TextBox_71848',
-          'position' => 'TextBox_71849',
-          'company' => 'TextBox_71850',
-          'country' => 'Select_71851',
-          'zipcode' => 'TextBox_71852',
-          'industry' => 'Select_71855',
-          'email' => 'TextBox_71853',
-          'tel' => 'TextBox_73385',
-          'fleetsize' => 'TextBox_71856',
-          'subject-list' => 'Select_71857',
-          'message' => 'TextBox_71858',
-          'NavigationGPS' => 'Select_78291'
-        );
-          $this->_userCreatedName = 'Checkbox_77800';
+        $fr = file_get_contents(__DIR__ . "/translations/fr.json");
+        $matcher = json_decode($fr, true)[self::$JSON_IDENTITY]['formKeys'];
+        $this->_userCreatedName = 'Checkbox_77800';
         break;
       case "he":
-        $matcher = array(
-          'firstname' => 'TextBox_85550',
-          'lastname' => 'TextBox_85549',
-          'position' => 'TextBox_85551',
-          'company' => 'TextBox_85548',
-          'country' => 'Select_85552',
-          'zipcode' => 'TextBox_85553',
-          'industry' => 'Select_85556',
-          'email' => 'TextBox_85554',
-          'tel' => 'TextBox_85555',
-          'fleetsize' => 'TextBox_85557',
-          'subject-list' => 'Select_85558',
-          'message' => 'TextBox_85559',
-          'NavigationGPS' => 'Select_85562'
-        );
+        $he = file_get_contents(__DIR__ . "/translations/he.json");
+        $matcher = json_decode($he, true)[self::$JSON_IDENTITY]['formKeys'];
         $this->_userCreatedName = 'Checkbox_85561';
         break;
       case "pt":
-        $matcher = array(
-          'firstname' => 'TextBox_85569',
-          'lastname' => 'TextBox_85568',
-          'position' => 'TextBox_85570',
-          'company' => 'TextBox_85567',
-          'country' => 'Select_85571',
-          'zipcode' => 'TextBox_85572',
-          'industry' => 'Select_85575',
-          'email' => 'TextBox_85573',
-          'tel' => 'TextBox_85574',
-          'fleetsize' => 'TextBox_85576',
-          'subject-list' => 'Select_85577',
-          'message' => 'TextBox_85582',
-          'NavigationGPS' => 'Select_85581'
-        );
+        $pt = file_get_contents(__DIR__ . "/translations/pt.json");
+        $matcher = json_decode($pt, true)[self::$JSON_IDENTITY]['formKeys'];
         $this->_userCreatedName = 'Checkbox_85580';
         break;
       case "en":
       default:
-        $matcher = array(
-          'firstname' => 'TextBox_74426',
-          'lastname' => 'TextBox_74427',
-          'position' => 'TextBox_74428',
-          'company' => 'TextBox_74429',
-          'country' => 'Select_74430',
-          'zipcode' => 'TextBox_74431',
-          'industry' => 'Select_74434',
-          'email' => 'TextBox_74432',
-          'tel' => 'TextBox_74433',
-          'fleetsize' => 'TextBox_74435',
-          'subject-list' => 'Select_74436',
-          'message' => 'TextBox_74437',
-          'NavigationGPS' => 'Select_78291'
-        );
+        $en = file_get_contents(__DIR__ . "/translations/en.json");
+        $matcher = json_decode($en, true)[self::$JSON_IDENTITY]['formKeys'];
         $this->_userCreatedName = 'Checkbox_77801';
         break;
     }
