@@ -49,7 +49,7 @@ class Mapotempo extends BaseClient implements IModelCRM {
   }
 
   public function initConnection() {
-    $this->_trads = getArrayForLang($this->dataFormatted['localization']);
+    $this->_trads = getFormResponsesBy($this->dataFormatted['localization']);
     $this->checkUser();
     $this->fetchUserFromBaseCustomer();
     

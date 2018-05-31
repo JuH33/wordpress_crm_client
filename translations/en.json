@@ -60,6 +60,14 @@
             "Slovénie",
             "Suède",
             "Ukraine"
-        ]
+        ],
+        "formResponses": {
+            "success_sent": "Thank you, your request has been sent ",
+            "confirm_sent": "A test account has been created, to activate it please set your password from the email sent to ",
+            "fail_no_sent": "Your Mapotempo account has not been created. ",
+            "email_ataken": "however your Mapotempo test account has not been created because the email address {email} is already used. ",
+            "vehicle_limit_overpassed": "You have declared {number} vehicles, nevertheless your free account will include 2. Thank you for your understanding. ",
+            "map_data": "We inform you that we do not yet have map data for your entire country. However, your geographic zone could be handled soon. For more information contact us: +33 5 64 27 04 59."
+        }
     }
 }
