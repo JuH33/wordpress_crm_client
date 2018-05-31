@@ -17,17 +17,39 @@ require_once(__DIR__ . "/AccountManager.php");
 */
 
 if (constant("DEBUG")) {
+
+  // IF NOT IN WORDPRESS FAKE IT
+  if (!function_exists('get_post_meta')) {
+    function get_post_meta($id, $tag, $single) {
+      return ['a:2:{s:11:"STATUS_CODE";i:204;s:16:"HUBSPOT_RESPONSE";s:0:"";}'];
+    }
+  }
+
+  if (!function_exists('add_filter')) {
+    function add_filter($str, $array, $n, $y) {
+      print_r('DEBUG::add_filter' . '=>' . $str . PHP_EOL);
+    }
+  }
+
   $data = array(
     'localization' => 'fr',
     'NavigationGPS' => 'tomtom',
-    'company' => 'MyCompanyTest',
-    'email' => 'julien-test@email.com',
+    'company' => '-MyCompan - 5 9yTestByJuH-',
+    'email' => 'julien@example.com',
     'country' => 'France'
   );
 
-  $manage = new AccountManager($data, array('Mapotempo'));
-  $manage->initFactory();
-  $manage->startConnections();
+  $postId = 42;
+
+  try {
+    $manage = new AccountManager($data, array('Mapotempo'), $postId);
+    $manage->initFactory();
+    $manage->startConnections();
+  } catch (Exception $e) {
+    print($e);
+  }
+
+  var_dump(['test', 'deux']);
 }
 
 /*
@@ -54,12 +76,11 @@ function wpcf7_inject_api_teamleader($cf7) {
       $manager = null;
 
       try {
-        $manager = new AccountManager($wpcf_submission->get_posted_data(), array('Mapotempo', 'Ines'));
-      } catch (InstanceException $e) {
-        print($e);
-      } finally {
+        $manager = new AccountManager($wpcf_submission->get_posted_data(), array('Mapotempo', 'Ines', 'Hubspot'));
         $manager->initFactory();
         $manager->startConnections();
+      } catch (Exception $e) {
+        print($e);
       }
     }
 

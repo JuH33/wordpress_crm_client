@@ -1,8 +1,10 @@
 <?php
 
 abstract class BaseClient {
+
   protected $descriptorCompleted;
   protected $sharedArray;
+  protected $postId;
   protected $error = false;
 
   protected $dataFormatted;
@@ -19,5 +21,19 @@ abstract class BaseClient {
         unset($this->dataFormatted[$key]);
       }
     }
+  }
+
+  protected function __construct($postId) {
+    $this->postId = $postId;
+  }
+
+  protected function log($filepath, $content, $append = true) {
+    $date = date(DATE_RFC2822);
+    $logs = "[{$date}] :: ";
+    $logs .= serialize($content);
+    $logs .= PHP_EOL;
+    $editMethods = ($append) ? FILE_APPEND | LOCK_EX : null;
+
+    file_put_contents($filepath, $logs, $editMethods);
   }
 }

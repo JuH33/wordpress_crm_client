@@ -40,7 +40,7 @@ function getFormResponsesBy($lang) {
   $path = __DIR__ . "/../translations/{$lang}.json";
 
   if (!file_exists($path)) {
-    throw MapotempoServerError("translations has not been found for [{$lang}] at path: {$path}");
+    throw new MapotempoException("translations has not been found for [{$lang}] at path: {$path}");
   }
 
   $fileContent = file_get_contents($path);
